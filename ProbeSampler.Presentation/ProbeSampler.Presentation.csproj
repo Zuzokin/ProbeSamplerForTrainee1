@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.OrTools" Version="9.9.3963" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="ReactiveUI" Version="19.4.1" />
+    <PackageReference Include="ReactiveUI.Fody" Version="19.4.1" />
+    <PackageReference Include="ReactiveUI.Validation" Version="3.1.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProbeSampler.Assets\ProbeSampler.Assets.csproj" />
+    <ProjectReference Include="..\ProbeSampler.Core\ProbeSampler.Core.csproj" />
+    <ProjectReference Include="..\ProbeSampler.NeuroUtils\ProbeSampler.NeuroUtils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="FodyWeavers.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
