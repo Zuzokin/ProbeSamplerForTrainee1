@@ -1,0 +1,160 @@
+﻿<rxui:ReactiveUserControl 
+    x:Class="ProbeSampler.WPF.CameraConnectionEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:ProbeSampler.WPF"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:viewmodel="clr-namespace:ProbeSampler.Presentation;assembly=ProbeSampler.Presentation"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:infrast="clr-namespace:ProbeSampler.WPF.Infrastructure"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="viewmodel:CameraConnectionEditorViewModel"
+    mc:Ignorable="d" >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="4" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel
+            Margin="8,8">
+            <TextBlock
+                FontWeight="UltraBlack"
+                FontSize="16"
+                Text="Предпросмотр потока"
+                Margin="0,4,0,4"/>
+            <Viewbox>
+                <rxui:ViewModelViewHost
+                    Name="CameraView"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch">
+                    <rxui:ViewModelViewHost.Style>
+                        <Style TargetType="rxui:ViewModelViewHost">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsVisible, ElementName=btnCancel}" Value="True">
+                                    <Setter Property="Effect">
+                                        <Setter.Value>
+                                            <BlurEffect Radius="10"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </rxui:ViewModelViewHost.Style>
+                </rxui:ViewModelViewHost>
+            </Viewbox>
+        </StackPanel>
+        <infrast:CancelableProgressButton
+            x:Name="btnCancel"
+            Margin="10"/>
+        <GridSplitter
+            Grid.Column="1"
+            Margin="0,4,0,0"
+            HorizontalAlignment="Stretch"/>
+        <ScrollViewer
+            Grid.Column="2"
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Auto">
+            <StackPanel
+                x:Name="MainRightStack"
+                Margin="8,8">
+                <StackPanel
+                    x:Name="CameraBasicInfo">
+                    <TextBlock
+                        FontWeight="UltraBlack"
+                        Text="Базовая информация"
+                        FontSize="24"
+                        Margin="0,4,0,4"/>
+                    <Grid
+                        x:Name="DebugControl">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            TextWrapping="Wrap"
+                            FontSize="20"
+                            Text="Режим дебага"/>
+                        <ToggleButton
+                            Grid.Column="1"
+                            x:Name="tglBtnIsDebug"
+                            Height="Auto"
+                            Width="50"
+                            HorizontalAlignment="Right"/>
+                    </Grid>
+                    <TextBox
+                        x:Name="strConfigName"
+                        Margin="0,0,0,2"
+                        FontSize="20"
+                        materialDesign:HintAssist.Hint="Название"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <TextBox
+                        x:Name="strCameraURI"
+                        Margin="0,0,0,8"
+                        FontSize="20"
+                        materialDesign:HintAssist.Hint="Адрес подключения"
+                        Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    <Grid
+                        x:Name="FileControl"
+                        Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox
+                            x:Name="strImageFilePath"
+                            FontSize="16"
+                            materialDesign:HintAssist.Hint="Путь до файла"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}" />
+                        <Button
+                            x:Name="btnLoadImage"
+                            Grid.Column="1"
+                            Width="40"
+                            Height="40"
+                            Margin="8,0,0,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource MaterialDesignTextFieldBoxBackground}"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            ToolTip="Выбрать изображение" Cursor="Hand">
+                            <materialDesign:PackIcon Kind="File" 
+                                Height="Auto"
+                                Width="40"
+                                HorizontalAlignment="Center"
+                                Margin="4,8"/>
+                        </Button>
+                    </Grid>
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <TextBlock
+                            TextWrapping="Wrap"
+                            FontSize="20"
+                            Text="Исходное разрешение: "/>
+                        <TextBlock
+                            TextWrapping="Wrap"
+                            x:Name="strCameraInputDimens"/>
+                    </StackPanel>
+                </StackPanel>
+                <Button
+                    x:Name="btnCameraCalibration"
+                    Height="40"
+                    Margin="8,5">
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <TextBlock
+                            Text="Калибровка камеры"
+                            FontSize="16"/>
+                        <materialDesign:PackIcon
+                            Margin="4,.5,0,0"
+                            Kind="CameraMeteringCenter" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</rxui:ReactiveUserControl>

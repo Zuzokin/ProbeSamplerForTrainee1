@@ -1,0 +1,367 @@
+﻿<rxui:ReactiveUserControl
+    x:Class="ProbeSampler.WPF.CalibrationView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:infrast="clr-namespace:ProbeSampler.WPF.Infrastructure"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:viewmodel="clr-namespace:ProbeSampler.Presentation;assembly=ProbeSampler.Presentation"
+    xmlns:local="clr-namespace:ProbeSampler.WPF"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" 
+    d:DesignWidth="800"
+    x:TypeArguments="viewmodel:CalibrationViewModel">
+    <materialDesign:Card>
+        <Grid
+            Margin="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button
+                x:Name="btnGoBack"
+                Margin="0,4"
+                HorizontalAlignment="Left"
+                Style="{StaticResource MaterialDesignFlatButton}">
+                <StackPanel
+                    Orientation="Horizontal">
+                    <materialDesign:PackIcon
+                        Kind="ChevronLeft"
+                        VerticalAlignment="Center"/>
+                    <TextBlock
+                        Text="Назад"
+                        FontSize="20"
+                        VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <materialDesign:Transitioner
+                Grid.Row="1"
+                x:Name="Transitioner"
+                Margin="10">
+                <Grid
+                    x:Name="StartScreen">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <Grid
+                    x:Name="CalibrationFromImages">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel
+                        Grid.RowSpan="2">
+                        <TextBlock
+                            FontWeight="UltraBlack"
+                            TextWrapping="Wrap"
+                            Text="Размеры 'шахматной доски'"
+                            FontSize="20"
+                            Margin="0,4,0,4"
+                            VerticalAlignment="Center"/>
+                        <TextBlock
+                            FontWeight="Normal"
+                            TextWrapping="Wrap"
+                            FontSize="18"
+                            Text="Количество углов"
+                            Margin="0,4,0,2"/>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox
+                                x:Name="intPatternWidth"
+                                materialDesign:HintAssist.Hint="В ширину"
+                                materialDesign:TextFieldAssist.SuffixText="шт"
+                                Text="5"
+                                FontSize="18"
+                                Margin="0,0,4,0"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="1"
+                                x:Name="intPatternHeight"
+                                materialDesign:HintAssist.Hint="В длину"
+                                materialDesign:TextFieldAssist.SuffixText="шт"
+                                Text="7"
+                                FontSize="18"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                        </Grid>
+                        <TextBlock
+                            FontWeight="Normal"
+                            TextWrapping="Wrap"
+                            Text="Реальные размеры"
+                            FontSize="18"
+                            Margin="0,4,0,2"/>
+                        <TextBox
+                            x:Name="floatSquareSize"
+                            materialDesign:HintAssist.Hint="Размер ячейки"
+                            materialDesign:TextFieldAssist.SuffixText="мм"
+                            Text="140"
+                            FontSize="18"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                        <TextBlock
+                            FontWeight="Normal"
+                            TextWrapping="Wrap"
+                            Text="Загрузка изображений"
+                            FontSize="18"
+                            Margin="0,10,0,2"/>
+                        <Button
+                            x:Name="btnAddImages"
+                            Margin="0,40"
+                            Style="{StaticResource MaterialDesignFloatingActionButton}">
+                            <materialDesign:PackIcon
+                                Width="20"
+                                Height="20"
+                                Kind="File" />
+                        </Button>
+
+                    </StackPanel>
+                    <Grid
+                        Grid.Column="1"
+                        Margin="10,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                FontWeight="UltraBlack"
+                                TextWrapping="Wrap"
+                                Text="Загруженные изображения"
+                                FontSize="18"
+                                Margin="0,4,0,4"
+                                VerticalAlignment="Center"/>
+                            <Button
+                                Grid.Column="1"
+                                x:Name="btnClearLoadedImages"
+                                Style="{StaticResource MaterialDesignFlatAlertButton}"
+                                Content="Очистить"
+                                FontSize="18"
+                                VerticalAlignment="Center"/>
+                        </Grid>
+                        <ScrollViewer
+                            Grid.Row="1"
+                            Margin="4,0"
+                            VerticalScrollBarVisibility="Auto"
+                            HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl
+                                x:Name="MatList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="Gray" Padding="5">
+                                            <Grid VerticalAlignment="Center">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition/>
+                                                    <ColumnDefinition/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock
+                                                    TextWrapping="Wrap"
+                                                    Text="{Binding Name}"
+                                                    Margin="5,0"
+                                                    VerticalAlignment="Center" />
+                                                <Grid
+                                                    Grid.Column="1"
+                                                    Width="20"
+                                                    Height="20"
+                                                    Margin="10,0">
+                                                    <Ellipse 
+                                                        x:Name="StatusEllipse" 
+                                                        Fill="Crimson"/>
+                                                    <materialDesign:PackIcon 
+                                                        x:Name="StatusIcon" 
+                                                        Kind="Close" 
+                                                        VerticalAlignment="Center" 
+                                                        HorizontalAlignment="Center" 
+                                                        Foreground="White" />
+                                                </Grid>
+                                            </Grid>
+                                        </Border>
+                                        <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding IsPatternFounded}" Value="True">
+                                                <Setter TargetName="StatusEllipse" Property="Fill" Value="Green"/>
+                                                <Setter TargetName="StatusIcon" Property="Kind" Value="Check"/>
+                                                <Setter TargetName="StatusIcon" Property="Foreground" Value="White"/>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </Grid>
+                    <Button
+                        HorizontalAlignment="Right"
+                        Margin="10"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        x:Name="btnProceed"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}">
+                        <materialDesign:PackIcon
+                            Width="20"
+                            Height="20"
+                            Kind="ArrowRightThick" />
+                    </Button>
+                </Grid>
+                <Grid
+                    x:Name="ConfirmCalibration">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Viewbox
+                        Grid.Row="1">
+                        <rxui:ViewModelViewHost
+                            Name="CameraView"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"/>
+                        <Viewbox.Style>
+                            <Style TargetType="Viewbox">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsVisible, ElementName=btnCancel}" Value="True">
+                                        <Setter Property="Effect">
+                                            <Setter.Value>
+                                                <BlurEffect Radius="10"/>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Viewbox.Style>
+                    </Viewbox>
+                    <infrast:CancelableProgressButton
+                        x:Name="btnCancel"
+                        Margin="10"
+                        Grid.Row="1"/>
+                    <Slider
+                        x:Name="rotationSlider"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                        Maximum="10"
+                        Minimum="-10"
+                        Margin="10"
+                        TickFrequency="0.1"
+                        Orientation="Vertical"
+                        Style="{StaticResource MaterialDesignDiscreteSlider}"/>
+                    <StackPanel
+                        Grid.Row="2">
+                        <TextBlock
+                            FontWeight="Normal"
+                            TextWrapping="Wrap"
+                            Text="Значение Alpha"
+                            Margin="0,4,0,2"/>
+                        <Slider
+                            Margin="10"
+                            x:Name="alphaSlider"
+                            Style="{StaticResource MaterialDesignDiscreteSlider}"
+                            Maximum="1"
+                            Minimum="0"
+                            TickFrequency="0.1"
+                            TickPlacement="BottomRight"/>
+                    </StackPanel>
+                    <StackPanel
+                        Grid.Row="3">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBox
+                                x:Name="doubleFxCoef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="fx"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="1"
+                                Margin="4,0,0,0"
+                                x:Name="doubleFyCoef"
+                                materialDesign:HintAssist.Hint="fy"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="0"
+                                Grid.Row="1"
+                                x:Name="doubleCxCoef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="cx"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="1"
+                                Grid.Row="1"
+                                x:Name="doubleCyCoef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="cy"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="2"
+                                Grid.Row="0"
+                                x:Name="doubleP1Coef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="p1"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="2"
+                                Grid.Row="1"
+                                x:Name="doubleP2Coef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="p2"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="0"
+                                Grid.Row="2"
+                                x:Name="doubleK1Coef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="k1"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="1"
+                                Grid.Row="2"
+                                x:Name="doubleK2Coef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="k2"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <TextBox
+                                Grid.Column="2"
+                                Grid.Row="2"
+                                x:Name="doubleK3Coef"
+                                Margin="0,0,4,0"
+                                materialDesign:HintAssist.Hint="k3"
+                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                            <Button
+                                Margin="8,8"
+                                Height="40"
+                                Grid.Column="3"
+                                Grid.Row="4"
+                                x:Name="btnConfirmCoefChanges"
+                                Content="Применить"
+                                FontSize="18"/>
+                        </Grid>
+                    </StackPanel>
+                
+                </Grid>
+            </materialDesign:Transitioner>
+        </Grid>
+    </materialDesign:Card>
+</rxui:ReactiveUserControl>
