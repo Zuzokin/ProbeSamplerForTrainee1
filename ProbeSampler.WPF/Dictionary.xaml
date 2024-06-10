@@ -1,0 +1,69 @@
+﻿<ResourceDictionary 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace:ProbeSampler.WPF"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style
+        TargetType="{x:Type dragablz:TabablzControl}"
+        BasedOn="{StaticResource MaterialDesignTabablzControlStyle}">
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="ShowDefaultCloseButton" Value="True" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="ClosingItemCallback" Value="{x:Static local:App.ClosingItemCallback}" />
+    </Style>
+    <Style 
+        TargetType="UserControl">
+        <Setter Property="Background" Value="{StaticResource MaterialDesignPaper}" />
+        <Setter Property="TextElement.Foreground" Value="{StaticResource MaterialDesignBody}" />
+    </Style>
+    <Style x:Key="MaterialDesignFlatAlertButton" TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource MaterialDesignFlatButton}">
+        <Setter Property="Foreground" Value="#d32f2f"/>
+        <Setter Property="wpf:RippleAssist.Feedback" Value="#d32f2f" />
+    </Style>
+    <Style x:Key="MaterialDesignAlertButton" TargetType="{x:Type ButtonBase}" BasedOn="{StaticResource MaterialDesignFlatMidBgButton}">
+        <Setter Property="Background" Value="#d32f2f"/>
+        <Setter Property="BorderBrush" Value="#d32f2f"/>
+        <Setter Property="wpf:RippleAssist.Feedback" Value="#d32f2f" />
+    </Style>
+    <Style TargetType="{x:Type local:DialogHeader}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:DialogHeader}">
+                    <materialDesign:ColorZone 
+                        Mode="PrimaryMid" 
+                        VerticalContentAlignment="Center" 
+                        Padding="8 4 8 4">
+                        <Grid VerticalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <materialDesign:PackIcon Kind="{TemplateBinding Icon}" VerticalAlignment="Center" />
+                            <TextBlock 
+                                Grid.Column="1" 
+                                VerticalAlignment="Center" 
+                                Margin="8 0 0 0"
+                                Style="{DynamicResource MaterialDesignTitleTextBlock}"
+                                Text="{TemplateBinding Title}" />
+                            <Button 
+                                Grid.Column="2" 
+                                HorizontalAlignment="Right" 
+                                Style="{DynamicResource MaterialDesignToolForegroundButton}"
+                                materialDesign:RippleAssist.IsCentered="True"
+                                Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+                                <Button.CommandParameter>
+                                    <system:Boolean>False</system:Boolean>
+                                </Button.CommandParameter>
+                                <materialDesign:PackIcon Kind="Close" />
+                            </Button>
+                        </Grid>
+                    </materialDesign:ColorZone>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
