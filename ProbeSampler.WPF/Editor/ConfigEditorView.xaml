@@ -1,0 +1,120 @@
+﻿<rxui:ReactiveUserControl 
+    x:Class="ProbeSampler.WPF.ConfigEditorView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:viewmodel="clr-namespace:ProbeSampler.Presentation;assembly=ProbeSampler.Presentation"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:local="clr-namespace:ProbeSampler.WPF" 
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="viewmodel:ConfigEditorViewModel"
+    mc:Ignorable="d"
+    x:Name="ConfigEitorView">
+    <materialDesign:Card
+        Margin="8">
+        <Grid
+            x:Name="MainEditorGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <StackPanel
+                Margin="0,2"
+                HorizontalAlignment="Center">
+                <StackPanel
+                    Orientation="Horizontal">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignIconButton}">
+                            <Setter Property="Margin" Value="5,0"/>
+                            <Setter Property="Width" Value="55"/>
+                            <Setter Property="Height" Value="55"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                        </Style>
+                    </StackPanel.Resources>
+                    <Button
+                        Name="btnConnect">
+                        <materialDesign:PackIcon 
+                            Kind="LanConnect" 
+                            Width="40"
+                            Height="40"/>
+                    </Button>
+                    <Button
+                        Name="btnStart">
+                        <materialDesign:PackIcon 
+                            Kind="Play"                             
+                            Width="40"
+                            Height="40"/>
+                    </Button>
+                    <Button 
+                        Name="btnPause">
+                        <materialDesign:PackIcon 
+                            Kind="Pause"                             
+                            Width="40"
+                            Height="40"/>
+                    </Button>
+                    <Button 
+                        Name="btnStop">
+                        <materialDesign:PackIcon 
+                            Kind="Close"                             
+                            Width="40"
+                            Height="40" Cursor=""/>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <TabControl
+                Grid.Row="1"
+                x:Name="tabControl">
+                
+                <TabItem Header="Подключение к камере">
+                    <rxui:ViewModelViewHost
+                        x:Name="CameraConnectionView"
+                        FontSize="20"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Margin="8"/>
+                </TabItem>
+                <TabItem Header="Сетка">
+                    <rxui:ViewModelViewHost
+                        x:Name="GridOverlayView"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Margin="8"/>
+                </TabItem>
+                <TabItem Header="Подключение к пробоотборнику">
+                    <rxui:ViewModelViewHost
+                        x:Name="SamplerConnectionView"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Margin="8"/>
+                </TabItem>
+            </TabControl>
+            <StackPanel
+                Grid.Row="2"
+                Orientation="Horizontal" 
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Bottom"    
+                Margin="4 4 4 4">
+                <Button
+                    x:Name="btnCancel"
+                    FontSize="20"
+                    IsCancel="True"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Command="{Binding CancelCommand}">
+                    ОТМЕНА
+                </Button>
+                <Button
+                    x:Name="btnSave"
+                    IsDefault="True"
+                    FontSize="20"
+                    Margin="8 0 0 0"
+                    Style="{DynamicResource MaterialDesignFlatButton}">
+                    СОХРАНИТЬ
+                </Button>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+</rxui:ReactiveUserControl>

@@ -1,0 +1,14 @@
+﻿global using ProbeSampler.Core;
+global using ProbeSampler.Core.Entities;
+global using ProbeSampler.Core.Enums;
+global using ProbeSampler.Core.Services.Contract;
+global using ProbeSampler.Core.Services.Processing;
+global using ProbeSampler.NeuroUtils.Services;
+global using ProbeSampler.Presentation.Base;
+global using ProbeSampler.Presentation.Extensions;
+global using ReactiveUI;
+global using ReactiveUI.Fody.Helpers;
+global using Splat;
+global using System;
+global using System.Reactive.Disposables;
+global using System.Reactive.Linq;
